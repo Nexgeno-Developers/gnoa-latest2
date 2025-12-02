@@ -47,12 +47,14 @@
 
                         <li class="side-nav-title">Navigation</li>
 
+                        @if(auth()->user()->role_id === 1)
                         <li class="side-nav-item"> <!--menuitem-active-->
                             <a href="{{ route('backend.dashboard') }}" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
                                 <i class="uil-home-alt"></i>
                                 <span> Dashboards </span>
                             </a>
                         </li>
+                        @endif
 
                         <li class="side-nav-item">
                             <a href="{{ route('contact.index') }}" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
@@ -60,6 +62,15 @@
                                 <span> Leads </span>
                             </a>
                         </li>
+                        
+                        @if(auth()->user()->role_id === 1)
+                        <li class="side-nav-item">
+                            <a href="{{ route('users.index') }}" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
+                                <i class="ri-user-settings-line"></i> 
+                                <span> Users </span>
+                            </a>
+                        </li>
+                        @endif
                         
                         {{--
                         <li class="side-nav-item">
@@ -69,6 +80,7 @@
                             </a>
                         </li>--}}
 
+                        @if(auth()->user()->role_id === 1)
                         <li class="side-nav-item">
                             <a href="{{ route('course.index') }}" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
                                 <i class="ri-suitcase-line"></i> 
@@ -195,6 +207,7 @@
                                 </ul>
                             </div>
                         </li>
+                        @endif
                         
                     </ul>
                     <!--- End Sidemenu -->

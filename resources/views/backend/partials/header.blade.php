@@ -369,7 +369,7 @@
                                 </span>
                                 <span class="d-lg-flex flex-column gap-1 d-none">
                                     <h5 class="my-0">{{ auth()->user()->name }}</h5>
-                                    <h6 class="my-0 fw-normal">Superadmin</h6>
+                                    <h6 class="my-0 fw-normal">{{ auth()->user()->role->name }}</h6>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">

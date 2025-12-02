@@ -258,6 +258,16 @@ Route::group(['prefix' => 'profile'], function () {
     Route::post('/reset', [UserController::class, 'reset'])->name('user.reset');    
 });
 
+//User Management
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/index', [UserController::class, 'index'])->name('users.index');
+    Route::get('/add', [UserController::class, 'add'])->name('users.add');
+    Route::post('/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/update', [UserController::class, 'update'])->name('users.update');
+    Route::post('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+});
+
 //course
 Route::group(['prefix' => 'course'], function () {
     Route::get('/index', [CourseController::class, 'index'])->name('course.index');

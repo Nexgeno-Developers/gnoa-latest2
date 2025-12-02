@@ -15,6 +15,7 @@ use App\Models\BlogComment;
 use App\Models\MediaCoverage;
 use App\Models\Publication;
 use App\Models\Courses;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -205,7 +206,12 @@ class IndexController extends Controller
 
         // Create the contact record, including 'cv' if provided
         $contactData = $request->all();
+        $contactData['gender'] = strtolower($request->input('gender'));
         $contactData['cv'] = $cvPath;
+        $clientIp = $request->ip();
+        $geoData = $this->getGeoFromIp($clientIp);
+        $contactData['ip'] = $clientIp;
+        $contactData['ip_info'] = json_encode($geoData);
 
         $name = isset($contactData["name"]) ? $contactData["name"] : ' - ';
         $email = isset($contactData["email"]) ? $contactData["email"] : ' - ';
@@ -466,6 +472,45 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * Resolve IP-based metadata using a free endpoint.
+     */
+    private function getGeoFromIp(?string $ip): array
+    {
+        $payload = [
+            'ip' => $ip,
+            'city' => null,
+            'region' => null,
+            'country' => null,
+            'loc' => null,
+            'postal' => null,
+            'timezone' => null,
+            'forwarded_for' => request()->header('X-Forwarded-For'),
+            'user_agent' => request()->header('User-Agent'),
+            'referer' => request()->header('Referer'),
+        ];
 
+        if (!$ip) {
+            return $payload;
+        }
 
+        try {
+            $response = Http::timeout(4)->get("https://ipwhois.app/json/{$ip}");
+            if ($response->successful()) {
+                $data = $response->json();
+                $payload['city'] = $data['city'] ?? null;
+                $payload['region'] = $data['region'] ?? null;
+                $payload['country'] = $data['country'] ?? null;
+                $payload['loc'] = isset($data['latitude'], $data['longitude'])
+                    ? $data['latitude'] . ',' . $data['longitude']
+                    : null;
+                $payload['postal'] = $data['postal'] ?? null;
+                $payload['timezone'] = $data['timezone'] ?? null;
+            }
+        } catch (\Throwable $e) {
+            // swallow errors; keep base payload
+        }
+
+        return $payload;
+    }
 }

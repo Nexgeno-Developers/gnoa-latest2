@@ -23,5 +23,7 @@ class Contact extends Model
         'url',
         'section',
         'cv',
+        'ip',
+        'ip_info',
     ];
 }

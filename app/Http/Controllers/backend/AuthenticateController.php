@@ -22,7 +22,11 @@ class AuthenticateController extends Controller
         $authenticated = Auth::guard('web')->attempt($request->only(['email', 'password']));
         if($authenticated)
         {
-            return redirect()->route('backend.dashboard');
+            $user = auth()->user();
+            if ($user && $user->role_id == 1) {
+                return redirect()->route('backend.dashboard');
+            }
+            return redirect()->route('contact.index');
         }
         else
         {

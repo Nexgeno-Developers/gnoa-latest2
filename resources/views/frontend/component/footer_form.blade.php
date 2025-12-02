@@ -22,8 +22,8 @@
         
         <select class="form-select select_drp_image select2" name="gender" required>
             <option value="">Gender (Student)</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
         </select>
 
         <select class="form-select select_drp_image select2" name="services" aria-label="Default select example" required>
